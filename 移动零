@@ -1,0 +1,80 @@
+class Solution {
+    private int[] Reposition(int[] nums,int ptz,int ptnz){
+        // int i = 0;
+        // int j = 0;
+        int i = ptz;
+        int j = ptnz;
+        int a[] = new int[2];
+         if(ptz < nums.length && ptnz < nums.length){
+        //     for( i = ptz;nums[i] != 0; i++ ){
+
+        // }
+        // for( j = ptnz; nums[j] == 0; j++){
+
+        // }
+        while(true){
+            //算ptz
+            if(nums[i] != 0){
+                i++;
+            }
+            if(i == nums.length){
+                break;
+            }
+            if(nums[i] == 0){
+                break;
+            }
+        }
+        while(true){
+            //算ptnz
+            if(nums[j] == 0){
+                j++;
+            }
+            if(j == nums.length){
+                break;
+            }
+            if(nums[j] != 0){
+                break;
+            }
+        }
+        
+        a[0] = i;
+        a[1] = j;
+        }else{
+            i = ptz;
+            j = ptnz;
+            
+        a[0] = i;
+        a[1] = j;
+        }
+        return a;
+    }
+    public void moveZeroes(int[] nums) {
+        int ptz = 0;
+        int ptnz = 0;
+        int temp = 0;
+        int a[] = new int[2];
+        a = Reposition(nums,ptz,ptnz);
+        ptz = a[0];
+        ptnz = a[1];
+        while(ptz < nums.length && ptnz < nums.length){
+            if(ptnz < ptz){
+                
+                a = Reposition(nums,ptz,ptnz + 1);
+                ptnz=a[1];
+            }
+            if(ptnz > ptz){
+                if(ptnz >= nums.length){
+                    break;
+                }else{
+                    temp = nums[ptz];
+                nums[ptz] = nums[ptnz];
+                nums[ptnz] = temp;
+                a = Reposition(nums,ptz+1,ptnz+1);
+                ptz=a[0];
+                ptnz=a[1];
+                }
+            }
+            
+        }
+    }
+}
