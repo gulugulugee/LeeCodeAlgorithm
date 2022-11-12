@@ -1,0 +1,44 @@
+class Solution {
+    int[] dx = {1, 0, 0, -1};//四个方向的x，y变化量
+    int[] dy = {0, 1, -1, 0};
+    int maxnum = 0;
+    private int[][] BFS(int x,int y,int[][] image) {
+        
+        int maxx = image.length;
+        int maxy = image[0].length;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        queue.offer(new int[] {x,y});
+        int num = 1;
+        image[x][y] = 0;
+        while(queue.isEmpty() == false){
+            int[] cell = queue.poll();
+            int mx = cell[0];
+            int my = cell[1];
+            for(int i =0 ;i<4;i++){
+                int nx = mx + dx[i];
+                int ny = my + dy[i];
+                if(nx < maxx&&nx >= 0){
+                    if(ny < maxy&&ny >= 0){
+                        if(image[nx][ny] == 1){
+                            queue.offer(new int[] {nx,ny});
+                            image[nx][ny] = 0;
+                            num++;
+                        }
+                    }
+                }
+            }
+        }
+        maxnum = Math.max(maxnum,num);
+        return image;
+    }
+    public int maxAreaOfIsland(int[][] grid) {
+        for(int i = 0;i < grid.length;i++){
+            for(int j =0;j < grid[0].length;j++){
+                if(grid[i][j] == 1){
+                    grid = BFS(i,j,grid);
+                }
+            }
+        }
+        return maxnum;
+    }
+}
