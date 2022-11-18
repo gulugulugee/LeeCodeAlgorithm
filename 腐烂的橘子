@@ -1,0 +1,72 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+// 0：空单元格
+// 1：新鲜橘子
+// 2：腐烂橘子
+//每分钟腐烂的 橘子周围 4个方向上相邻的橘子腐烂
+// 返回没有新鲜橘子所需的分钟，若不可能则返回-1
+
+class Solution {
+    int time = 0;
+    int[][] dxy = {{1,0},{0,-1},{-1,0},{0,1}};
+    public int orangesRotting(int[][] grid) {
+        int orangeNum = 0;
+        int m = grid.length , n = grid[0].length;
+        int[][] timeTable = new int[m][n];
+        Queue<int[]> queue = new LinkedList<int[]>();
+        boolean[][] check = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0){
+                    check[i][j] = true;
+                }
+                if (grid[i][j] == 2){
+                    queue.offer(new int[] {i,j});
+                    check[i][j] = true;
+                    orangeNum++;
+                }
+                if (grid[i][j] == 1){
+                    check[i][j] = false;
+                    orangeNum++;
+                }
+            }
+        }
+        while(queue.isEmpty() == false){
+            int[] xy = queue.poll();
+            int x = xy[0];
+            int y = xy[1];
+            for (int i = 0; i < dxy.length; i++) {
+                int nx = x + dxy[i][0];
+                int ny = y + dxy[i][1];
+                if(nx >= 0&& nx < m&& ny >= 0&& ny < n){
+                    if(check[nx][ny] == false){
+                        grid[nx][ny] = 2;
+                        timeTable[nx][ny] = timeTable[x][y] + 1;
+                        queue.offer(new int[] {nx,ny});
+                        check[nx][ny] = true;
+                    }
+                }
+                
+            }
+        }
+        int checkOrangeNum = 0;
+        for (int i = 0; i < check.length; i++) {
+            for (int j = 0; j < check[0].length; j++) {
+                if (grid[i][j] == 2){
+                    checkOrangeNum++;
+                }
+            }
+        }
+        for (int i = 0; i < check.length; i++) {
+            for (int j = 0; j < check[0].length; j++) {
+                time = Math.max(time, timeTable[i][j]);
+            }
+        }
+        if(checkOrangeNum == orangeNum){
+            return time+1;
+        }else{
+            return -1;
+        }
+    }
+}
