@@ -2,16 +2,16 @@ class Solution {
     static int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};//四个方向
 
     public int[][] updateMatrix(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        int[][] dist = new int[m][n];
-        boolean[][] seen = new boolean[m][n];
+        int m = matrix.length, n = matrix[0].length;//m：行数；n：列数
+        int[][] dist = new int[m][n];//返回项
+        boolean[][] seen = new boolean[m][n];//判断每个点是否检查过
         Queue<int[]> queue = new LinkedList<int[]>();
         // 将所有的 0 添加进初始队列中
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (matrix[i][j] == 0) {
                     queue.offer(new int[]{i, j});
-                    seen[i][j] = true;
+                    seen[i][j] = true;//把所有的零标记为已经检查过
                 }
             }
         }
@@ -24,9 +24,9 @@ class Solution {
                 int ni = i + dirs[d][0];
                 int nj = j + dirs[d][1];
                 if (ni >= 0 && ni < m && nj >= 0 && nj < n && !seen[ni][nj]) {//当前检查点旁的未检查过的点
-                    dist[ni][nj] = dist[i][j] + 1;//非零点数值加一
-                    queue.offer(new int[]{ni, nj});//从非零点开始遍历
-                    seen[ni][nj] = true;//当前非零点标记为已经检查过的
+                    dist[ni][nj] = dist[i][j] + 1;//旁边的未检查点数值加一
+                    queue.offer(new int[]{ni, nj});//把旁边的点加入队列
+                    seen[ni][nj] = true;//当前点标记为已经检查过的
                 }
             }
         }
