@@ -8,14 +8,14 @@ import java.util.Queue;
 // 返回没有新鲜橘子所需的分钟，若不可能则返回-1
 
 class Solution {
-    int time = 0;
-    int[][] dxy = {{1,0},{0,-1},{-1,0},{0,1}};
+    int time = 0;//运行时间
+    int[][] dxy = {{1,0},{0,-1},{-1,0},{0,1}};//四个方向
     public int orangesRotting(int[][] grid) {
-        int orangeNum = 0;
+        int orangeNum = 0;//橘子的总数
         int m = grid.length , n = grid[0].length;
-        int[][] timeTable = new int[m][n];
+        int[][] timeTable = new int[m][n];//查看每个橘子在第几分钟腐坏的，其最大值即总运行时间
         Queue<int[]> queue = new LinkedList<int[]>();
-        boolean[][] check = new boolean[m][n];
+        boolean[][] check = new boolean[m][n];//是否检查过
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 0){
@@ -29,7 +29,7 @@ class Solution {
                 if (grid[i][j] == 1){
                     check[i][j] = false;
                     orangeNum++;
-                }
+                }//统计橘子总数，并将腐烂的橘子填入队列，空格子排除
             }
         }
         while(queue.isEmpty() == false){
@@ -42,7 +42,7 @@ class Solution {
                 if(nx >= 0&& nx < m&& ny >= 0&& ny < n){
                     if(check[nx][ny] == false){
                         grid[nx][ny] = 2;
-                        timeTable[nx][ny] = timeTable[x][y] + 1;
+                        timeTable[nx][ny] = timeTable[x][y] + 1;//计算该橘子是在第几轮腐烂中变质的
                         queue.offer(new int[] {nx,ny});
                         check[nx][ny] = true;
                     }
@@ -54,16 +54,16 @@ class Solution {
         for (int i = 0; i < check.length; i++) {
             for (int j = 0; j < check[0].length; j++) {
                 if (grid[i][j] == 2){
-                    checkOrangeNum++;
+                    checkOrangeNum++;//查看腐烂结束后腐烂橘子的总数
                 }
             }
         }
         for (int i = 0; i < check.length; i++) {
             for (int j = 0; j < check[0].length; j++) {
-                time = Math.max(time, timeTable[i][j]);
+                time = Math.max(time, timeTable[i][j]);//选取时间表中的最大值表示腐烂总时长
             }
         }
-        if(checkOrangeNum == orangeNum){
+        if(checkOrangeNum == orangeNum){//若全部腐烂则返回时间
             return time+1;
         }else{
             return -1;
